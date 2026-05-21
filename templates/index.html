@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautySync | Campaign Management Portal</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%238257e5%22/><path d=%22M30,30 L70,30 L70,70 L30,70 Z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22/></svg>">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            </div>
+            <div>
+                <h1>BeautySync Control Panel</h1>
+                <p class="header-sub">Mobile App Dynamic Campaign Manager</p>
+            </div>
+        </div>
+        <div class="server-status">
+            <span class="status-dot"></span>
+            <span>SYSTEM ONLINE</span>
+        </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card purple">
+            <div class="stat-info"><h3>Total Campaigns</h3><p id="stat-total">0</p></div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-info"><h3>Active Banners</h3><p id="stat-active">0</p></div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 22 22 22"></polygon><circle cx="12" cy="13" r="2"></circle></svg>
+            </div>
+        </div>
+        <div class="stat-card cyan">
+            <div class="stat-info"><h3>Mobile API Hits</h3><p id="stat-hits">0</p></div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+        </div>
+        <div class="stat-card orange">
+            <div class="stat-info"><h3>Total Media Files</h3><p id="stat-media">0</p></div>
+            <div class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+
+        <!-- Left: Upload Form -->
+        <div class="form-panel">
+            <div class="panel-header">
+                <h2>Deploy Campaign Update</h2>
+                <p>Schedule media campaigns and push them to targeted app versions</p>
+            </div>
+
+            <form id="campaign-form" autocomplete="off">
+
+                <div class="form-group">
+                    <label for="version_code">Target App Version Code <span>*</span></label>
+                    <input type="text" id="version_code" name="version_code" placeholder="e.g. 104, 2.1.0 or 'all'" required>
+                    <div class="version-pills" id="version-pills">
+                        <span class="version-pill" data-version="all">all</span>
+                        <span class="version-pill" data-version="104">104</span>
+                        <span class="version-pill" data-version="1.0.0">1.0.0</span>
+                        <span class="version-pill" data-version="2.0.0">2.0.0</span>
+                    </div>
+                    <span class="hint-text">Use 'all' to push globally to every installation.</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start_date">Start Date <span>*</span></label>
+                        <input type="datetime-local" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date <span>*</span></label>
+                        <input type="datetime-local" id="end_date" name="end_date" required>
+                    </div>
+                </div>
+
+                <!-- Multi-Media Upload -->
+                <div class="form-group">
+                    <label>Campaign Media Files</label>
+                    <div class="media-actions">
+                        <button type="button" class="add-media-btn" id="add-image-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            Add Image
+                        </button>
+                        <button type="button" class="add-media-btn video" id="add-video-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                            Add Video
+                        </button>
+                    </div>
+                    <div id="media-items-container" class="media-items-container">
+                        <div class="media-empty-hint" id="media-empty-hint">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <p>Click <strong>Add Image</strong> or <strong>Add Video</strong>, or <strong>drop multiple files here</strong></p>
+                        </div>
+                    </div>
+                    <span class="hint-text">Add multiple images & videos. Each supports an optional caption.</span>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    Deploy Live Campaign
+                </button>
+
+            </form>
+        </div>
+
+        <!-- Right: Phone Mockup Preview -->
+        <div class="preview-panel">
+            <div class="panel-header" style="text-align:center; border:none; margin-bottom:1.5rem;">
+                <h2>Live Mobile Preview</h2>
+                <p>Real-time emulation inside the BeautySync app</p>
+            </div>
+
+            <div class="mockup-wrapper">
+                <div class="phone-mockup">
+                    <div class="phone-island"></div>
+                    <div class="phone-screen">
+                        <div class="mockup-header">
+                            <span>12:00</span>
+                            <div class="mockup-header-icons">
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21l-12-12c5-5 14-5 19 0l-7 12z"/></svg>
+                                <svg width="12" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="1" y="6" width="18" height="12" rx="2"/><rect x="20" y="9" width="3" height="6" rx="1"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="mockup-content">
+                            <div class="mockup-placeholder" id="mockup-placeholder">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <p>Upload media to preview the mobile layout</p>
+                            </div>
+                            <div class="mockup-media-container" id="mockup-media-container"></div>
+                            <div class="mockup-description-overlay" id="mockup-description-overlay"></div>
+                            <span class="mockup-badge" id="mockup-version-badge">v1.0.0</span>
+                            <span class="mockup-media-count" id="mockup-media-count" style="display:none;">1/1</span>
+
+                            <!-- Prev / Next arrows -->
+                            <button class="mockup-nav prev" id="mockup-prev" style="display:none;" title="Previous">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <button class="mockup-nav next" id="mockup-next" style="display:none;" title="Next">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                            </button>
+
+                            <!-- Dot indicators -->
+                            <div class="mockup-dots" id="mockup-dots"></div>
+                        </div>
+
+                        <div class="mockup-footer">
+                            <h4 id="mockup-footer-title">New Update Alert</h4>
+                            <div class="mockup-footer-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                <span>From: <strong id="mockup-start-date">--</strong></span>
+                            </div>
+                            <div class="mockup-footer-row">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                <span>Until: <strong id="mockup-end-date">--</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Campaign History Table -->
+    <div class="list-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Deploy History</h2>
+                <p>Manage campaigns, view media, and monitor schedule lifecycles</p>
+            </div>
+            <button class="refresh-btn" id="refresh-btn" title="Refresh">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Refresh
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>CAMPAIGN</th>
+                        <th>MEDIA</th>
+                        <th>STATUS</th>
+                        <th>SCHEDULE</th>
+                        <th>HITS</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody id="campaigns-table-body">
+                    <tr><td colspan="6" class="empty-table"><p>Loading campaigns...</p></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Media Lightbox Modal -->
+<div id="lightbox" class="lightbox" style="display:none;">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-panel">
+        <div class="lightbox-header">
+            <div>
+                <h3 id="lightbox-title">Campaign Media</h3>
+                <span id="lightbox-subtitle" class="lightbox-subtitle"></span>
+            </div>
+            <button class="lightbox-close" id="lightbox-close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="lightbox-body">
+            <div class="lightbox-main" id="lightbox-main"></div>
+            <div class="lightbox-strip" id="lightbox-strip"></div>
+        </div>
+        <div class="lightbox-nav">
+            <button class="lb-nav-btn" id="lb-prev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                Previous
+            </button>
+            <span id="lb-counter" class="lb-counter">1 / 1</span>
+            <button class="lb-nav-btn" id="lb-next">
+                Next
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
