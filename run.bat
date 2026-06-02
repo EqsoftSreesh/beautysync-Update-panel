@@ -34,7 +34,16 @@ echo   API GET URL: http://127.0.0.1:5000/api/mobile/active-update?version_code=
 echo ===================================================
 echo.
 
-:: Run Flask app
-python app.py
+:: Run Flask app in background
+start "Flask Server" python app.py
+
+:: Wait a moment for Flask to start
+timeout /t 2 /nobreak >nul
+
+:: Start ngrok tunnel on port 5000
+echo [INFO] Starting ngrok tunnel...
+echo [INFO] Check the ngrok URL below to use on your mobile device.
+echo.
+ngrok http 5000
 
 pause
