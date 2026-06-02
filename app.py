@@ -291,7 +291,7 @@ def create_update():
         # Save campaign record
         conn = get_db()
         cursor = conn.cursor()
-        created_at = datetime.utcnow().isoformat()
+        created_at = datetime.now(IST).isoformat()
         cursor.execute('''
             INSERT INTO campaigns (version_code, image_filename, video_filename,
                                    start_date, end_date, created_at,
