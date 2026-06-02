@@ -1,0 +1,15 @@
+# Databases and cache
+data.db
+__pycache__/
+*.pyc
+
+# Local Environment variables (contains sensitive secrets)
+.env
+
+# Uploads directory (we don't want to commit temporary uploaded images/videos to git)
+uploads/*
+!uploads/.gitkeep
+
+# IDE specific directories
+.vscode/
+.idea/
